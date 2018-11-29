@@ -5,8 +5,11 @@ class Player {
   PVector r_hand_pos;
   PVector l_hand_pos;
   PVector torso_pos;
+  float life_update;
+  float full_life = 1000;
+  int life_x;
   
-  float head_x, head_y;
+  //float head_x, head_y;
   
   Player(String temp_player, PVector temp_head, PVector temp_torso, PVector temp_r_hand, PVector temp_l_hand){   
     player_number = temp_player;
@@ -22,6 +25,7 @@ class Player {
   
   void run(){
     display();
+    lifeBar();
     //move();
   }
   
@@ -67,5 +71,22 @@ class Player {
 //      head_y = head_pos.y;
 //    }
   //}
+  
+  void lifeBar(){
+    if(player_number == "p1"){
+      life_x = 60;
+      fill(255,30,0);
+    } else {
+      life_x = 380;
+      fill(30,255,0);
+    }
+    noStroke();
+    life_update = map(full_life, 1000, 0, 200, 0);
+    rect(life_x + 200, 30, -life_update, 30);
+    strokeWeight(2);
+    stroke(255);
+    noFill();
+    rect(life_x,30,200,30);
+  }
   
 }

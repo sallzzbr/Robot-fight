@@ -85,7 +85,7 @@ void draw()
   imageMode(CORNER);
   image(context.userImage(),0,0);
   
- //background(fundo);
+ background(fundo);
  
  for (Player p: players)   p.run();
  
