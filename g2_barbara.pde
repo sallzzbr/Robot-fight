@@ -85,9 +85,17 @@ void draw()
   imageMode(CORNER);
   image(context.userImage(),0,0);
   
- background(fundo);
+ //background(fundo);
  
  for (Player p: players)   p.run();
+ if(players.size() == 2){
+   println(players.size());
+   for(int i=0;i<2;i++){
+     for(int u=0;u<2;u++){
+       players.get(u).collision(players.get(i));
+     }
+   }
+ }
  
 // for (Player p: players) {
 //   p.run();

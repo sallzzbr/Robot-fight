@@ -89,4 +89,20 @@ class Player {
     rect(life_x,30,200,30);
   }
   
+  void collision(Player other){
+    
+    //if(players.size() == 2){
+      if(other.torso_pos != null &&  head_pos != null && l_hand_pos != null && r_hand_pos != null){
+        if ((l_hand_pos.x > other.torso_pos.x - 50 && l_hand_pos.x < other.torso_pos.x + 50) || (r_hand_pos.x > other.torso_pos.x - 50 && r_hand_pos.x < other.torso_pos.x + 50)){
+          if ((l_hand_pos.y > other.torso_pos.y - 75 && l_hand_pos.y < other.torso_pos.y + 175) || (r_hand_pos.y > other.torso_pos.y - 75 && r_hand_pos.y < other.torso_pos.y + 175)){
+            other.full_life-=100; 
+          }
+        }
+//        if (l_hand_pos.x > other.head_pos.x - 50 && l_hand_pos.x < other.head_pos.x + 50 || r_hand_pos.x > other.head_pos.x - 50 && r_hand_pos.x < other.head_pos.x + 50){
+//          other.full_life-=100; 
+//        }
+      }
+    //}
+  }
+  
 }
