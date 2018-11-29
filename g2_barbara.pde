@@ -232,10 +232,10 @@ void onNewUser(SimpleOpenNI curContext, int userId)
     curContext.startTrackingSkeleton(userId);
     
     if(userId == 1){
-      players.add(new Player("p", convertedHead, convertedTorso, convertedRHand, convertedLHand));
+      players.add(new Player("p1", convertedHead, convertedTorso, convertedRHand, convertedLHand));
     }
     if(userId == 2){
-      players.add(new Player("p", convertedHead, convertedTorso, convertedRHand, convertedLHand));
+      players.add(new Player("p2", convertedHead, convertedTorso, convertedRHand, convertedLHand));
     }
   }
 }

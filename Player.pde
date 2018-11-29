@@ -29,18 +29,34 @@ class Player {
    imageMode(CENTER);  
    //HEAD
   if(head_pos != null){
-    image(head1, head_pos.x, head_pos.y, 100, 100);
+    if(player_number == "p1"){
+      image(head1, head_pos.x, head_pos.y, 100, 100);
+    } else {
+      image(head2, head_pos.x, head_pos.y, 100, 100);
+    }
   } 
    //TORSO
   if(torso_pos != null){
-    image(tronco1, torso_pos.x, torso_pos.y+50, 100, 250);
+    if(player_number == "p1"){
+      image(tronco1, torso_pos.x, torso_pos.y+50, 100, 250);
+    } else {
+      image(tronco2, torso_pos.x, torso_pos.y+50, 100, 250);
+    }
   } 
    //HANDS
   if(r_hand_pos != null){
-    image(maoD1, r_hand_pos.x, r_hand_pos.y, 35, 35);
+    if(player_number == "p1"){
+      image(maoD1, r_hand_pos.x, r_hand_pos.y, 35, 35);
+    } else {
+      image(maoD2, r_hand_pos.x, r_hand_pos.y, 35, 35);
+    }
   } 
   if(l_hand_pos != null){
-    image(maoE1, l_hand_pos.x, l_hand_pos.y, 35, 35);
+    if(player_number == "p1"){
+      image(maoE1, l_hand_pos.x, l_hand_pos.y, 35, 35);
+    } else {
+      image(maoE2, l_hand_pos.x, l_hand_pos.y, 35, 35);
+    }
   } 
     
   }
