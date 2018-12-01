@@ -15,6 +15,12 @@ PImage head1, tronco1, maoE1, maoD1;
 PImage head2, tronco2, maoE2, maoD2;
 PImage hadou1, hadou2;
 PImage fundo;
+PVector convertedHead, convertedTorso, convertedRHand, convertedLHand;
+
+int fixed_length;
+
+final static ArrayList<Player> players = new ArrayList(); 
+//Player[] players;
 
 boolean trigger1 = false;
 
@@ -65,6 +71,7 @@ void setup()
   stroke(0,0,255);
   strokeWeight(3);
   smooth();  
+  //players = new Player[fixed_length];
 }
 
 void draw()
@@ -78,21 +85,35 @@ void draw()
   imageMode(CORNER);
   image(context.userImage(),0,0);
   
- background(fundo); 
+ //background(fundo);
+ 
+ for (Player p: players)   p.run();
+ if(players.size() == 2){
+   println(players.size());
+   for(int i=0;i<2;i++){
+     for(int u=0;u<2;u++){
+       players.get(u).collision(players.get(i));
+     }
+   }
+ }
+ 
+// for (Player p: players) {
+//   p.run();
+// }
   
   // draw the skeleton if it's available
   int[] userList = context.getUsers(); 
-  int teste = userList.length;
+  fixed_length = userList.length;
   if(userList.length >= 2){
-    teste = 2;
+    fixed_length = 2;
   }
-  for(int i=0;i<teste;i++)
+  for(int i=0;i<fixed_length;i++)
   {
     if(context.isTrackingSkeleton(userList[i]))
     {
       stroke(userClr[ (userList[i] - 1) % userClr.length ] );
       drawSkeleton(userList[i]);
-    }      
+    }    
       
     // draw the center of mass
     if(context.getCoM(userList[i],com))
@@ -144,10 +165,10 @@ void drawSkeleton(int userId)
 //  context.drawLimb(userId, SimpleOpenNI.SKEL_TORSO, SimpleOpenNI.SKEL_RIGHT_HIP);
 //  context.drawLimb(userId, SimpleOpenNI.SKEL_RIGHT_HIP, SimpleOpenNI.SKEL_RIGHT_KNEE);
 //  context.drawLimb(userId, SimpleOpenNI.SKEL_RIGHT_KNEE, SimpleOpenNI.SKEL_RIGHT_FOOT);
-
+for(int i=0;i<fixed_length;i++){
 //HEAD
  PVector playerHead = new PVector();
- context.getJointPositionSkeleton(userId, SimpleOpenNI.SKEL_HEAD, playerHead);
+ context.getJointPositionSkeleton(i+1, SimpleOpenNI.SKEL_HEAD, playerHead);
  PVector convertedHead = new PVector();
  context.convertRealWorldToProjective(playerHead, convertedHead);
  
@@ -158,53 +179,53 @@ void drawSkeleton(int userId)
 // context.convertRealWorldToProjective(playerNeck, convertedNeck);
  
  //SHOULDERS
- PVector playerRshoulder = new PVector();
- context.getJointPositionSkeleton(userId, SimpleOpenNI.SKEL_RIGHT_SHOULDER, playerRshoulder);
- PVector convertedRshoulder = new PVector();
- context.convertRealWorldToProjective(playerRshoulder, convertedRshoulder);
- 
- PVector playerLshoulder = new PVector();
- context.getJointPositionSkeleton(userId, SimpleOpenNI.SKEL_LEFT_SHOULDER, playerLshoulder);
- PVector convertedLshoulder = new PVector();
- context.convertRealWorldToProjective(playerLshoulder, convertedLshoulder);
+ PVector playerTorso = new PVector();
+ context.getJointPositionSkeleton(i+1, SimpleOpenNI.SKEL_TORSO, playerTorso);
+ PVector convertedTorso = new PVector();
+ context.convertRealWorldToProjective(playerTorso, convertedTorso);
  
  //HIP
- PVector playerRhip = new PVector();
- context.getJointPositionSkeleton(userId, SimpleOpenNI.SKEL_RIGHT_HIP, playerRhip);
- PVector convertedRhip = new PVector();
- context.convertRealWorldToProjective(playerRhip, convertedRhip);
- 
- PVector playerLhip = new PVector();
- context.getJointPositionSkeleton(userId, SimpleOpenNI.SKEL_LEFT_HIP, playerLhip);
- PVector convertedLhip = new PVector();
- context.convertRealWorldToProjective(playerLhip, convertedLhip);
+// PVector playerRhip = new PVector();
+// context.getJointPositionSkeleton(userId, SimpleOpenNI.SKEL_RIGHT_HIP, playerRhip);
+// PVector convertedRhip = new PVector();
+// context.convertRealWorldToProjective(playerRhip, convertedRhip);
+// 
+// PVector playerLhip = new PVector();
+// context.getJointPositionSkeleton(userId, SimpleOpenNI.SKEL_LEFT_HIP, playerLhip);
+// PVector convertedLhip = new PVector();
+// context.convertRealWorldToProjective(playerLhip, convertedLhip);
  
  //HANDS
  PVector playerRHand = new PVector();
- context.getJointPositionSkeleton(userId, SimpleOpenNI.SKEL_RIGHT_ELBOW, playerRHand);
+ context.getJointPositionSkeleton(i+1, SimpleOpenNI.SKEL_RIGHT_HAND, playerRHand);
  PVector convertedRHand = new PVector();
  context.convertRealWorldToProjective(playerRHand, convertedRHand);
  
  PVector playerLHand = new PVector();
- context.getJointPositionSkeleton(userId, SimpleOpenNI.SKEL_LEFT_ELBOW, playerLHand);
+ context.getJointPositionSkeleton(i+1, SimpleOpenNI.SKEL_LEFT_HAND, playerLHand);
  PVector convertedLHand = new PVector();
  context.convertRealWorldToProjective(playerLHand, convertedLHand);
- 
- 
- imageMode(CENTER);
- //HEAD
- image(head1, convertedHead.x, convertedHead.y, 100, 100);
- //TORSO
- image(tronco1, (convertedRhip.x + convertedLhip.x)/2, (convertedRshoulder.y + convertedRhip.y)/1.75, 100, 250);
- //HANDS
- image(maoD1, convertedRHand.x, convertedRHand.y, 35, 35);
- image(maoE1, convertedLHand.x, convertedLHand.y, 35, 35);
  
 // println("1", (convertedRhip.x + convertedLhip.x)/2);
 // println("2", (convertedRshoulder.y + convertedRhip.y)/2);
 // println("3", (convertedRhip.x - convertedLhip.x));
 // println("4", (convertedRhip.y - convertedRshoulder.y));
 
+//for (int y = 0; y < fixed_length-1; y++) {
+//    players[y] = new Player("p", convertedHead, convertedRshoulder, convertedLshoulder, convertedRHand, convertedLHand);
+//}
+println(convertedHead);
+
+//  for(int i=0;i<fixed_length;i++) {
+//    players.get(i).head_pos = convertedHead;   
+//  }
+
+  players.get(i).head_pos = convertedHead; 
+  players.get(i).torso_pos = convertedTorso; 
+  players.get(i).r_hand_pos = convertedRHand; 
+  players.get(i). l_hand_pos = convertedLHand; 
+
+}
 }
 
 // -----------------------------------------------------------------
@@ -215,7 +236,16 @@ void onNewUser(SimpleOpenNI curContext, int userId)
   println("onNewUser - userId: " + userId);
   println("\tstart tracking skeleton");
   
-  curContext.startTrackingSkeleton(userId);
+  if(userId <= 2){
+    curContext.startTrackingSkeleton(userId);
+    
+    if(userId == 1){
+      players.add(new Player("p1", convertedHead, convertedTorso, convertedRHand, convertedLHand));
+    }
+    if(userId == 2){
+      players.add(new Player("p2", convertedHead, convertedTorso, convertedRHand, convertedLHand));
+    }
+  }
 }
 
 void onLostUser(SimpleOpenNI curContext, int userId)
