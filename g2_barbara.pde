@@ -43,13 +43,13 @@ void setup()
   tronco1 = loadImage("data/red/torsoP1.png");
   maoE1 = loadImage("data/red/mao-esquerdaP1.png");
   maoD1 = loadImage("data/red/mao-direitaP1.png");
-  hadou1 = loadImage("data/hadouken.png");
+  hadou1 = loadImage("data/tiro.png");
 
   head2 = loadImage("data/blue/cabecaP2.png");
   tronco2 = loadImage("data/blue/torsoP2.png");
   maoE2 = loadImage("data/blue/mao-esquerdaP2.png");
   maoD2 = loadImage("data/blue/mao-direitaP2.png");
-  hadou2 = loadImage("data/hadouken2.png");
+  hadou2 = loadImage("data/tiro.png");
   
   context = new SimpleOpenNI(this);
   context.setMirror(true);
@@ -89,10 +89,14 @@ void draw()
  
  for (Player p: players)   p.run();
  if(players.size() == 2){
-   println(players.size());
+   //println(players.size());
    for(int i=0;i<2;i++){
      for(int u=0;u<2;u++){
-       players.get(u).collision(players.get(i));
+       if( u == i){
+          
+        } else {
+          players.get(u).collision(players.get(i));
+        }
      }
    }
  }
@@ -214,7 +218,7 @@ for(int i=0;i<fixed_length;i++){
 //for (int y = 0; y < fixed_length-1; y++) {
 //    players[y] = new Player("p", convertedHead, convertedRshoulder, convertedLshoulder, convertedRHand, convertedLHand);
 //}
-println(convertedHead);
+//println(convertedHead);
 
 //  for(int i=0;i<fixed_length;i++) {
 //    players.get(i).head_pos = convertedHead;   

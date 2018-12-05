@@ -1,25 +1,37 @@
 class Hadouken {
   
-  float x1 = 200;
-  float velX=5;
+  String side;
+  float hado_x;
+  float velX;
+  float accel;
   
-  Hadouken() { 
-    //fill(255);
-    pushStyle();
-    noFill();
-    noStroke();
-    x1+=velX;
-    ellipseMode(CENTER);
-    ellipse(x1, 300, 80, 80);
-    image(hadou1, x1, 300, 100, 100);
-    popStyle();
+  Hadouken(String temp_side, float temp_hado_x){
+    side = temp_side;
+    hado_x = temp_hado_x;
+    velX = 3;
+    accel = 1.1;
+  }
   
-    if (x1 > width+50) {
-      x1 = 200;   
-      trigger1 = false;
+  void run(){
+    display();
+    move();
+  }
+  
+  void display(){
+    if(side == "left"){
+      image(hadou1, hado_x, 150, 100, 100);
+    } else {
+      image(hadou2, hado_x, 150, 100, 100);
     }
   }
   
+  void move(){
+    velX = velX * accel;
+    if(side == "left"){
+      hado_x += velX;
+    } else {
+      hado_x -= velX;
+    }
+  }
   
 }
-

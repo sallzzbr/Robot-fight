@@ -1,5 +1,4 @@
 class Player {
-  
   String player_number;
   PVector head_pos;
   PVector r_hand_pos;
@@ -8,6 +7,10 @@ class Player {
   float life_update;
   float full_life = 1000;
   int life_x;
+  String hands_side;
+  float hadou_x_loc;
+  //Hadouken[]hadoukens = new Hadouken[1];
+  ArrayList<Hadouken>hadoukens;
   
   //float head_x, head_y;
   
@@ -16,7 +19,8 @@ class Player {
     head_pos = temp_head;
     torso_pos = temp_torso;
     r_hand_pos = temp_r_hand;
-    l_hand_pos = temp_l_hand;    
+    l_hand_pos = temp_l_hand;
+    hadoukens = new ArrayList();
   }
 
 //  Player(){
@@ -26,13 +30,17 @@ class Player {
   void run(){
     display();
     lifeBar();
+    hadou_trigger();
     //move();
   }
   
   void display(){
-   imageMode(CENTER);  
+   imageMode(CENTER); 
    //HEAD
-  if(head_pos != null){
+  if(head_pos != null){ 
+      if(hadoukens.size() == 1){
+          hadoukens.get(0).run();
+      }     
     if(player_number == "p1"){
       image(head1, head_pos.x, head_pos.y, 100, 100);
     } else {
@@ -72,6 +80,28 @@ class Player {
 //    }
   //}
   
+  void hadou_trigger(){
+    if (l_hand_pos != null && r_hand_pos != null) {
+      if(hadoukens.size() < 1){
+        if (l_hand_pos.x > torso_pos.x && r_hand_pos.x > torso_pos.x){
+         println(hadoukens.size());
+         hands_side = "left";
+         hadou_x_loc = r_hand_pos.x;
+         hadoukens.add(new Hadouken(hands_side, hadou_x_loc));
+        } else if (l_hand_pos.x < torso_pos.x && r_hand_pos.x < torso_pos.x) {
+          println(hadoukens.size());
+          hands_side = "right";
+          hadou_x_loc = r_hand_pos.x;
+          hadoukens.add(new Hadouken(hands_side, hadou_x_loc));
+        }
+      } else {
+        if(hadoukens.get(0).hado_x < 0 || hadoukens.get(0).hado_x > 640){
+          hadoukens.clear();
+        }
+      }
+    }
+  }
+  
   void lifeBar(){
     if(player_number == "p1"){
       life_x = 60;
@@ -93,11 +123,19 @@ class Player {
     
     //if(players.size() == 2){
       if(other.torso_pos != null &&  head_pos != null && l_hand_pos != null && r_hand_pos != null){
-        if ((l_hand_pos.x > other.torso_pos.x - 50 && l_hand_pos.x < other.torso_pos.x + 50) || (r_hand_pos.x > other.torso_pos.x - 50 && r_hand_pos.x < other.torso_pos.x + 50)){
-          if ((l_hand_pos.y > other.torso_pos.y - 75 && l_hand_pos.y < other.torso_pos.y + 175) || (r_hand_pos.y > other.torso_pos.y - 75 && r_hand_pos.y < other.torso_pos.y + 175)){
-            other.full_life-=100; 
+        if(other.full_life > 0){
+          if ((l_hand_pos.x > other.torso_pos.x - 50 && l_hand_pos.x < other.torso_pos.x + 50) || (r_hand_pos.x > other.torso_pos.x - 50 && r_hand_pos.x < other.torso_pos.x + 50)){
+            if ((l_hand_pos.y > other.torso_pos.y - 75 && l_hand_pos.y < other.torso_pos.y + 175) || (r_hand_pos.y > other.torso_pos.y - 75 && r_hand_pos.y < other.torso_pos.y + 175)){
+              other.full_life-=100; 
+            }
+          }
+          if(hadoukens.size() == 1){
+            if ((hadoukens.get(0).hado_x > other.torso_pos.x - 50 && hadoukens.get(0).hado_x < other.torso_pos.x + 50) || (hadoukens.get(0).hado_x > other.torso_pos.x - 50 && hadoukens.get(0).hado_x < other.torso_pos.x + 50)){
+                other.full_life-=100; 
+            }
           }
         }
+        
 //        if (l_hand_pos.x > other.head_pos.x - 50 && l_hand_pos.x < other.head_pos.x + 50 || r_hand_pos.x > other.head_pos.x - 50 && r_hand_pos.x < other.head_pos.x + 50){
 //          other.full_life-=100; 
 //        }
