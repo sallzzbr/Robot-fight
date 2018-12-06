@@ -76,21 +76,21 @@ void setup()
 
 void draw()
 {
- //background(fundo);
   // update the cam
   context.update();
   
-  // draw depthImageMap
-  //image(context.depthImage(),0,0);
+
   imageMode(CORNER);
   image(context.userImage(),0,0);
   
- //background(fundo);
+ background(fundo);
  
  for (Player p: players)   p.run();
  if(players.size() == 2){
-   //println(players.size());
    for(int i=0;i<2;i++){
+     if (players.get(i).full_life == 0){
+        gameover(); 
+     }
      for(int u=0;u<2;u++){
        if( u == i){
           
@@ -100,10 +100,6 @@ void draw()
      }
    }
  }
- 
-// for (Player p: players) {
-//   p.run();
-// }
   
   // draw the skeleton if it's available
   int[] userList = context.getUsers(); 
@@ -148,27 +144,6 @@ void drawSkeleton(int userId)
   context.getJointPositionSkeleton(userId,SimpleOpenNI.SKEL_NECK,jointPos);
   println(jointPos);
   */
-  
-//  context.drawLimb(userId, SimpleOpenNI.SKEL_HEAD, SimpleOpenNI.SKEL_NECK);
-//
-//  context.drawLimb(userId, SimpleOpenNI.SKEL_NECK, SimpleOpenNI.SKEL_LEFT_SHOULDER);
-//  context.drawLimb(userId, SimpleOpenNI.SKEL_LEFT_SHOULDER, SimpleOpenNI.SKEL_LEFT_ELBOW);
-//  context.drawLimb(userId, SimpleOpenNI.SKEL_LEFT_ELBOW, SimpleOpenNI.SKEL_LEFT_HAND);
-//
-//  context.drawLimb(userId, SimpleOpenNI.SKEL_NECK, SimpleOpenNI.SKEL_RIGHT_SHOULDER);
-//  context.drawLimb(userId, SimpleOpenNI.SKEL_RIGHT_SHOULDER, SimpleOpenNI.SKEL_RIGHT_ELBOW);
-//  context.drawLimb(userId, SimpleOpenNI.SKEL_RIGHT_ELBOW, SimpleOpenNI.SKEL_RIGHT_HAND);
-//
-//  context.drawLimb(userId, SimpleOpenNI.SKEL_LEFT_SHOULDER, SimpleOpenNI.SKEL_TORSO);
-//  context.drawLimb(userId, SimpleOpenNI.SKEL_RIGHT_SHOULDER, SimpleOpenNI.SKEL_TORSO);
-//
-//  context.drawLimb(userId, SimpleOpenNI.SKEL_TORSO, SimpleOpenNI.SKEL_LEFT_HIP);
-//  context.drawLimb(userId, SimpleOpenNI.SKEL_LEFT_HIP, SimpleOpenNI.SKEL_LEFT_KNEE);
-//  context.drawLimb(userId, SimpleOpenNI.SKEL_LEFT_KNEE, SimpleOpenNI.SKEL_LEFT_FOOT);
-//
-//  context.drawLimb(userId, SimpleOpenNI.SKEL_TORSO, SimpleOpenNI.SKEL_RIGHT_HIP);
-//  context.drawLimb(userId, SimpleOpenNI.SKEL_RIGHT_HIP, SimpleOpenNI.SKEL_RIGHT_KNEE);
-//  context.drawLimb(userId, SimpleOpenNI.SKEL_RIGHT_KNEE, SimpleOpenNI.SKEL_RIGHT_FOOT);
 for(int i=0;i<fixed_length;i++){
 //HEAD
  PVector playerHead = new PVector();
@@ -188,17 +163,6 @@ for(int i=0;i<fixed_length;i++){
  PVector convertedTorso = new PVector();
  context.convertRealWorldToProjective(playerTorso, convertedTorso);
  
- //HIP
-// PVector playerRhip = new PVector();
-// context.getJointPositionSkeleton(userId, SimpleOpenNI.SKEL_RIGHT_HIP, playerRhip);
-// PVector convertedRhip = new PVector();
-// context.convertRealWorldToProjective(playerRhip, convertedRhip);
-// 
-// PVector playerLhip = new PVector();
-// context.getJointPositionSkeleton(userId, SimpleOpenNI.SKEL_LEFT_HIP, playerLhip);
-// PVector convertedLhip = new PVector();
-// context.convertRealWorldToProjective(playerLhip, convertedLhip);
- 
  //HANDS
  PVector playerRHand = new PVector();
  context.getJointPositionSkeleton(i+1, SimpleOpenNI.SKEL_RIGHT_HAND, playerRHand);
@@ -209,20 +173,6 @@ for(int i=0;i<fixed_length;i++){
  context.getJointPositionSkeleton(i+1, SimpleOpenNI.SKEL_LEFT_HAND, playerLHand);
  PVector convertedLHand = new PVector();
  context.convertRealWorldToProjective(playerLHand, convertedLHand);
- 
-// println("1", (convertedRhip.x + convertedLhip.x)/2);
-// println("2", (convertedRshoulder.y + convertedRhip.y)/2);
-// println("3", (convertedRhip.x - convertedLhip.x));
-// println("4", (convertedRhip.y - convertedRshoulder.y));
-
-//for (int y = 0; y < fixed_length-1; y++) {
-//    players[y] = new Player("p", convertedHead, convertedRshoulder, convertedLshoulder, convertedRHand, convertedLHand);
-//}
-//println(convertedHead);
-
-//  for(int i=0;i<fixed_length;i++) {
-//    players.get(i).head_pos = convertedHead;   
-//  }
 
   players.get(i).head_pos = convertedHead; 
   players.get(i).torso_pos = convertedTorso; 
@@ -260,6 +210,27 @@ void onLostUser(SimpleOpenNI curContext, int userId)
 void onVisibleUser(SimpleOpenNI curContext, int userId)
 {
   //println("onVisibleUser - userId: " + userId);
+}
+
+void gameover() {
+  clear();
+  fill(255);
+  textSize(48);
+  text("GAME OVER", width/2-150, height/2-150);
+  textSize(36);
+  if (players.get(0).full_life == 0)
+    text("PLAYER 1 WINS", width/2-150, height/2-50);
+  if (players.get(1).full_life == 0)
+    text("PLAYER 2 WINS", width/2-150, height/2-50);
+  
+  textSize(24);  
+  text("Press 'Q' to quit", width/2-150, height/2+150);  
+
+  if (keyPressed) {
+    if (key == 'q') {
+      exit();
+    }
+  }
 }
 
 
