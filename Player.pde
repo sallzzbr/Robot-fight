@@ -9,11 +9,8 @@ class Player {
   int life_x;
   String hands_side;
   float hadou_x_loc;
-  //Hadouken[]hadoukens = new Hadouken[1];
   ArrayList<Hadouken>hadoukens;
   int hit;
-
-  //float head_x, head_y;
 
   Player(String temp_player, PVector temp_head, PVector temp_torso, PVector temp_r_hand, PVector temp_l_hand) {   
     player_number = temp_player;
@@ -25,15 +22,10 @@ class Player {
     hit = 0;
   }
 
-  //  Player(){
-  //    
-  //  }
-
   void run() {
     display();
     lifeBar();
     hadou_trigger();
-    //move();
   }
 
   void display() {
@@ -73,13 +65,6 @@ class Player {
       }
     }
   }
-
-  //void move(){
-  //    if(head_pos != null){
-  //      head_x = head_pos.x;
-  //      head_y = head_pos.y;
-  //    }
-  //}
 
   void hadou_trigger() {
     if (l_hand_pos != null && r_hand_pos != null) {
@@ -121,8 +106,6 @@ class Player {
   }
 
   void collision(Player other) {
-
-    //if(players.size() == 2){
     if (other.torso_pos != null &&  head_pos != null && l_hand_pos != null && r_hand_pos != null) {
       if (other.full_life > 0) {
         if (other.l_hand_pos.y > other.head_pos.y && other.r_hand_pos.y > other.head_pos.y) {
@@ -139,21 +122,15 @@ class Player {
                   hit++ ;
               } 
             }
-          }
-        } else {
-          if(frameCount%60 == 15){
-            hit = 0;
-            println("go");
-          }
+          } else {
+            if(frameCount%60 == 15){
+              hit = 0;
+              println("go");
+            }
+          }   
         }
-    } 
-
-    //        if (l_hand_pos.x > other.head_pos.x - 50 && l_hand_pos.x < other.head_pos.x + 50 || r_hand_pos.x > other.head_pos.x - 50 && r_hand_pos.x < other.head_pos.x + 50){
-    //          other.full_life-=100; 
-    //        }
+      } 
+    }
   }
-
-  //}
-}
 
 }
