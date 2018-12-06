@@ -125,18 +125,20 @@ class Player {
     //if(players.size() == 2){
     if (other.torso_pos != null &&  head_pos != null && l_hand_pos != null && r_hand_pos != null) {
       if (other.full_life > 0) {
-        if (hit < 1) {
-          if ((l_hand_pos.x > other.torso_pos.x - 50 && l_hand_pos.x < other.torso_pos.x + 50) || (r_hand_pos.x > other.torso_pos.x - 50 && r_hand_pos.x < other.torso_pos.x + 50)) {
-            if ((l_hand_pos.y > other.torso_pos.y - 75 && l_hand_pos.y < other.torso_pos.y + 175) || (r_hand_pos.y > other.torso_pos.y - 75 && r_hand_pos.y < other.torso_pos.y + 175)) {
-                other.full_life-=100;
-                hit++ ;
-            }
-          } 
-          if (hadoukens.size() == 1) {
-            if ((hadoukens.get(0).hado_x > other.torso_pos.x - 50 && hadoukens.get(0).hado_x < other.torso_pos.x + 50) || (hadoukens.get(0).hado_x > other.torso_pos.x - 50 && hadoukens.get(0).hado_x < other.torso_pos.x + 50)) {  
-                other.full_life-=100;
-                hit++ ;
+        if (other.l_hand_pos.y > other.head_pos.y && other.r_hand_pos.y > other.head_pos.y) {
+          if(hit < 1){
+            if ((l_hand_pos.x > other.torso_pos.x - 50 && l_hand_pos.x < other.torso_pos.x + 50) || (r_hand_pos.x > other.torso_pos.x - 50 && r_hand_pos.x < other.torso_pos.x + 50)) {
+              if ((l_hand_pos.y > other.torso_pos.y - 75 && l_hand_pos.y < other.torso_pos.y + 175) || (r_hand_pos.y > other.torso_pos.y - 75 && r_hand_pos.y < other.torso_pos.y + 175)) {
+                  other.full_life-=100;
+                  hit++ ;
+              }
             } 
+            if (hadoukens.size() == 1) {
+              if ((hadoukens.get(0).hado_x > other.torso_pos.x - 50 && hadoukens.get(0).hado_x < other.torso_pos.x + 50) || (hadoukens.get(0).hado_x > other.torso_pos.x - 50 && hadoukens.get(0).hado_x < other.torso_pos.x + 50)) {  
+                  other.full_life-=100;
+                  hit++ ;
+              } 
+            }
           }
         } else {
           if(frameCount%60 == 15){
